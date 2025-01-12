@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+message ClientCommand {
+    string action = 1; 
+}
+
+message DeviceInfo {
+    string device_id = 1;
+    string type = 2;
+    string state = 3;
+}
+
+message DeviceList {
+    repeated DeviceInfo devices = 1;
+}
+
+message TemperatureData {
+    double current_temperature = 1;
+}
+
+message TemperatureCommand {
+    string action = 1;
+    double value = 2;
+}
+
+message Cable {
+    string channel = 1;
+    string id = 2;
+}
+
+message Streaming {
+    string app = 1;
+    string id = 2;
+}
+
+message TVOptions {
+    repeated Cable Cable = 1;
+    repeated Streaming streaming = 2;
+}
+
+message TVCommand {
+    string action = 1; 
+    string value = 2;  
+}
+
+message TimeData {
+    string current_time = 1;
+}
+
+message LampCommand {
+    string action = 1;
+    string lamp_state = 2;
+    string upper_limit_lamp = 3;
+    string lower_limit_lamp = 4;
+}
