@@ -5,7 +5,7 @@ import devices_pb2
 def connect_to_gateway():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(("127.0.0.1", 10001))
-    sock.send("client".encode('utf-8'))
+    # sock.send("client".encode('utf-8'))
     return sock
 
 def list_devices(sock):
@@ -41,7 +41,7 @@ def send_command(sock, action, target_device=None):
         print(f"Error sending command: {e}")
 
 
-def print_menu_options():
+def print_menu_options(sock):
     print("\nOpções:\n")
     print("list: Listar quais dispositivos estão conectados")
     print("send: Enviar um comando para o dispositivo")
@@ -54,6 +54,7 @@ if __name__ == "__main__":
     gateway_socket = connect_to_gateway()
 
     menu_options = {
+        "man": print_menu_options,
         "list": list_devices,
         "send": send_device_command,
         "shutdown_device": shutdown_device,
@@ -62,8 +63,7 @@ if __name__ == "__main__":
     }
 
     while True:
-        print_menu_options()  
-        choice = input("R: ").strip()
+        choice = input("$ ").strip()
 
         if choice in menu_options:
             if choice == "exit":

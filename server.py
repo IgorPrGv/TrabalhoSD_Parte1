@@ -24,30 +24,25 @@ def multicast_discovery():
     while True:
         data, address = sock.recvfrom(1024)
         print(f"Received discovery message from {address}")
-        if data.decode('utf-8') == "DISCOVER_TEMPERATURE":
-            message = f"{socket.gethostbyname(socket.gethostname())}:{TCP_PORT}"
-            sock.sendto(message.encode('utf-8'), address)
-            handle_device_connection(sock, "SensorDeTemperatura")
-        elif data.decode('utf-8') == "DISCOVER_TV":
-            message = f"{socket.gethostbyname(socket.gethostname())}:{TCP_PORT}"
-            sock.sendto(message.encode('utf-8'), address)
-            handle_device_connection(sock, "SmartTV")
-        elif data.decode('utf-8') == "DISCOVER_LAMP":
-            message = f"{socket.gethostbyname(socket.gethostname())}:{TCP_PORT}"
-            sock.sendto(message.encode('utf-8'), address)
-            handle_device_connection(sock, "LampadaInteligente")
+        try:
+            message = data.decode('utf-8')
+            if message.startswith("DISCOVER_"):
+                device_type = message.split("_", 1)[1]
+                if device_type not in ["TEMPERATURE", "TV", "LAMP"]:
+                    print(f"Unknown device type: {device_type}")
+                    continue
 
-def start_server():
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('', TCP_PORT))
-    server_socket.listen(5)
-    print(f"TCP server running on port {TCP_PORT}")
+                # Send response back to the device
+                response = f"{socket.gethostbyname(socket.gethostname())}:{TCP_PORT}"
+                sock.sendto(response.encode('utf-8'), address)
 
-    while True:
-        client_socket, client_address = server_socket.accept()
-        print(f"Connection from {client_address}")
-
-        threading.Thread(target=handle_client, args=(client_socket,)).start()
+                # Add device to the discovered list
+                device_id = f"{device_type}_{len(devices) + 1}"
+                devices[device_id] = {"address": address, "type": device_type, "state": "discovered"}
+                print(f"Discovered device: {device_id}")
+                            
+        except Exception as e:
+            print(f"Error handling discovery message: {e}")
 
 def handle_device_connection(device_socket, device_type):
     device_id = f"{device_type}_{len(devices) + 1}"
@@ -68,6 +63,18 @@ def handle_device_connection(device_socket, device_type):
         device_socket.close()
         devices[device_id]["state"] = "disconnected"
         print(f"Device {device_id} disconnected.")
+
+def start_server():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('', TCP_PORT))
+    server_socket.listen(5)
+    print(f"TCP server running on port {TCP_PORT}")
+
+    while True:
+        client_socket, client_address = server_socket.accept()
+        print(f"Connection from {client_address}")
+
+        threading.Thread(target=handle_client, args=(client_socket,)).start()
 
 
 def list_devices(client_socket):
@@ -123,7 +130,7 @@ def handle_client(client_socket):
             command = devices_pb2.ClientCommand()
             command.ParseFromString(data)
 
-            if command.action == "list":
+            if command.action == "list_devices":
                 list_devices(client_socket)
             elif command.action == "send":
                 device_id = command.target_device

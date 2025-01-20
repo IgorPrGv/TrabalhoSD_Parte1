@@ -3,9 +3,11 @@ import time
 import random
 import struct
 import devices_pb2
+import uuid
 
 MULTICAST_GROUP = '224.1.1.1'
 PORT = 10000
+DEVICE_ID = f"TEMP_SENSOR_{uuid.uuid4().hex[:8]}"
 
 def discover_servers():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -40,12 +42,17 @@ def start_device(host, port):
     try:
         while True:
             temperature_data = devices_pb2.TemperatureData()
+            temperature_data.device_id = DEVICE_ID
             temperature_data.current_temperature = temperature
 
             client_socket.send(temperature_data.SerializeToString())
-            print(f"Sent temperature: {temperature}°C")
+            print(f"Sent temperature: {temperature}°C from {DEVICE_ID}")
 
             command_data = client_socket.recv(1024)
+            if not command_data: 
+                print(f"Server disconnected.")
+                break
+            
             command = devices_pb2.TemperatureCommand()
             command.ParseFromString(command_data)
             print(f"Server command: {command.action} to {command.value}°C")
@@ -54,8 +61,9 @@ def start_device(host, port):
                 temperature += 1.0
             elif command.action == "decrease":
                 temperature -= 1.0
-            elif command.action == "stable":
-                pass
+            elif command.action == "shutdown":
+                print(f"Shutting down device as per server request.")
+                break
 
             temperature += random.uniform(-0.5, 0.5)
             time.sleep(10)
@@ -65,6 +73,7 @@ def start_device(host, port):
     
     finally:
         client_socket.close()
+        print(f"Device {DEVICE_ID} disconnected.")
 
 if __name__ == "__main__":
     while True:

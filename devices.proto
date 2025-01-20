@@ -2,6 +2,7 @@ syntax = "proto3";
 
 message ClientCommand {
     string action = 1; 
+    string target_device = 2;
 }
 
 message DeviceInfo {
@@ -16,6 +17,7 @@ message DeviceList {
 
 message TemperatureData {
     double current_temperature = 1;
+    string device_id = 2;
 }
 
 message TemperatureCommand {
