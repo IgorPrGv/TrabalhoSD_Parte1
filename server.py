@@ -38,7 +38,7 @@ def multicast_discovery():
 
                 # Add device to the discovered list
                 device_id = f"{device_type}_{len(devices) + 1}"
-                devices[device_id] = {"address": address, "type": device_type, "state": "discovered"}
+                devices[device_id] = {"socket" : sock, "address" : address, "type": device_type, "state": "active"}
                 print(f"Discovered device: {device_id}")
                             
         except Exception as e:
@@ -95,7 +95,7 @@ def list_devices(client_socket):
 def send_command_to_device(client_socket, data, device_id):
     """Função para enviar um comando para o dispositivo."""
     if device_id in devices and devices[device_id]["state"] == "active":
-        devices[device_id]["socket"].send(data)
+        devices[device_id]["socket"].sendto(data.encode('utf-8'), devices[device_id]["address"])
         response = f"Command sent to {device_id}"
     else:
         response = f"Device {device_id} not found or disconnected."
@@ -124,21 +124,22 @@ def handle_client(client_socket):
     try:
         while True:
             data = client_socket.recv(1024)
+            print(f"{data}")
             if not data:
                 break
 
             command = devices_pb2.ClientCommand()
             command.ParseFromString(data)
-
-            if command.action == "list_devices":
+   
+            if command.action == "command: list_devices":
                 list_devices(client_socket)
-            elif command.action == "send":
+            elif "send" in  command.action:
                 device_id = command.target_device
-                send_command_to_device(client_socket, data, device_id)
-            elif command.action == "shutdown_device":
+                send_command_to_device(client_socket, command.action, device_id)
+            elif command.action == "command: shutdown_device":
                 device_id = command.target_device
                 shutdown_device(client_socket, device_id)
-            elif command.action == "shutdown_gateway":
+            elif command.action == "command: shutdown_gateway":
                 shutdown_gateway(client_socket)
     except Exception as e:
         print(f"Error with client: {e}")

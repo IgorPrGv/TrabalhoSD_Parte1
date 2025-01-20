@@ -48,6 +48,7 @@ def start_device(host, port):
             client_socket.send(temperature_data.SerializeToString())
             print(f"Sent temperature: {temperature}°C from {DEVICE_ID}")
 
+
             command_data = client_socket.recv(1024)
             if not command_data: 
                 print(f"Server disconnected.")
@@ -57,11 +58,11 @@ def start_device(host, port):
             command.ParseFromString(command_data)
             print(f"Server command: {command.action} to {command.value}°C")
 
-            if command.action == "increase":
+            if command.action == "send: increase":
                 temperature += 1.0
-            elif command.action == "decrease":
+            elif command.action == "send: decrease":
                 temperature -= 1.0
-            elif command.action == "shutdown":
+            elif "shut" in command.action:
                 print(f"Shutting down device as per server request.")
                 break
 

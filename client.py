@@ -15,6 +15,7 @@ def list_devices(sock):
 def send_device_command(sock):
     device_id = input("Enter device ID: ").strip()
     action = input("Enter command action: ").strip()
+
     send_command(sock, action, target_device=device_id)
 
 
@@ -29,9 +30,11 @@ def shutdown_gateway(sock):
 
 def send_command(sock, action, target_device=None):
     command = devices_pb2.ClientCommand()
-    command.action = action
+    command.action = "command: " + action
+
     if target_device:
         command.target_device = target_device
+        command.action = "send: " + action
 
     try:
         sock.send(command.SerializeToString())
