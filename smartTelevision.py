@@ -44,28 +44,29 @@ def start_device(host, port):
         while True:
             
             command_data = device_socket.recv(1024)
+            print("teve resebeuson")
             if not command_data:
                 break
 
             command = devices_pb2.TVCommand()
             command.ParseFromString(command_data)
             
-            if command.action == "on":
+            if command.action == "send: on":
                 tv_state["power"] = True
                 print("TV Ligada.")
 
-            elif command.action == "off":
+            elif command.action == "send: off":
                 tv_state["power"] = False
                 tv_state["mode"] = None
                 tv_state["now"] = None
                 print("TV Desligada.")
 
-            elif command.action == "cable" and tv_state["power"]:
+            elif command.action == "send: cable" and tv_state["power"]:
                 tv_state["mode"] = "cable"
                 tv_state["now"] = command.value
                 print(f"Assistindo canal a cabo: {command.value}")
 
-            elif command.action == "streaming" and tv_state["power"]:
+            elif command.action == "send: streaming" and tv_state["power"]:
                 tv_state["mode"] = "streaming"
                 tv_state["now"] = command.value
                 print(f"Assistindo streaming: {command.value}")

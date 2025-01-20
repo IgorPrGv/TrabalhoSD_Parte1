@@ -131,6 +131,9 @@ def handle_client(client_socket):
             command = devices_pb2.ClientCommand()
             command.ParseFromString(data)
    
+
+            # Comandos para atuar nos sensores são enviados no formato "send: xxx", o restante no formato "command: xxx"
+            #para poder enviar por uma função só os multiplos comandos para os sensores
             if command.action == "command: list_devices":
                 list_devices(client_socket)
             elif "send" in  command.action:

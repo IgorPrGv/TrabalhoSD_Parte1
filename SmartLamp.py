@@ -68,11 +68,11 @@ def start_client(host, port):
             server_command = devices_pb2.LampCommand()
             server_command.ParseFromString(server_data)
 
-            if server_command.action == "on" and lamp_state == "off":
+            if server_command.action == "send: on" and lamp_state == "off":
                 lamp_state = "on"
                 print("Lamp turned ON by server command.")
                 
-            elif server_command.action == "off" and lamp_state == "on":
+            elif server_command.action == "send: off" and lamp_state == "on":
                 lamp_state = "off"
                 print("Lamp turned OFF by server command.")
                 
