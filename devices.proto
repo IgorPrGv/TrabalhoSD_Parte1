@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+message ClientCommand {
+    string action = 1; 
+    string target_device = 2;
+}
+
+message DeviceInfo {
+    string device_id = 1;
+    string type = 2;
+    string state = 3;
+}
+
+message DeviceList {
+    repeated DeviceInfo devices = 1;
+}
+
+message DeviceData{
+    double current_measurement = 1;
+    string current_time = 2;
+    string device_id = 3;
+    string upper_limit = 4;
+    string lower_limit = 5;
+
+}
+
+message DeviceCommand{
+    string action = 1;
+    string value = 2;
+    string set_upper_limit = 3;
+    string set_lower_limit = 4;
+
+}

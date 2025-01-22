@@ -1,0 +1,79 @@
+import socket
+import devices_pb2
+
+
+def connect_to_gateway():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(("127.0.0.1", 10001))
+    return sock
+
+def list_devices():
+    with connect_to_gateway() as sock:
+        send_command(sock, "list")
+
+
+def send_device_command():
+    device_id = input("Enter device ID: ").strip()
+    action = input("Enter command action: ").strip()
+
+    with connect_to_gateway() as sock:
+        send_command(sock, action, target_device=device_id)
+
+
+def shutdown_device():
+    device_id = input("Enter device ID: ").strip()
+    
+    with connect_to_gateway() as sock:
+        send_command(sock, "shutdown_device", target_device=device_id)
+
+def shutdown_gateway():
+    with connect_to_gateway() as sock:
+        send_command(sock, "shutdown_gateway")
+    print("Gateway shutting down...")
+
+
+def send_command(sock, action, target_device=None):
+    command = devices_pb2.ClientCommand()
+    command.action = action
+    if target_device:
+        command.target_device = target_device
+
+    try:
+        sock.send(command.SerializeToString())
+        print(f"Command sent: {command.action}")
+        response = sock.recv(1024)
+        print(f"Response: {response.decode('utf-8')}")
+    except Exception as e:
+        print(f"Error sending command: {e}")
+
+
+def print_menu_options():
+    print("\nOpções:\n")
+    print("list: Listar quais dispositivos estão conectados")
+    print("send: Enviar um comando para o dispositivo")
+    print("shutdown_device: Desligar um dos dispositivos")
+    print("shutdown_gateway: Desligar o gateway")
+    print("exit: Fechar o programa")
+
+
+if __name__ == "__main__":
+    menu_options = {
+        "man": print_menu_options,
+        "list": list_devices,
+        "send": send_device_command,
+        "shutdown_device": shutdown_device,
+        "shutdown_gateway": shutdown_gateway,
+        "exit": lambda: print("Exiting...")
+    }
+
+    while True:
+        choice = input("$ ").strip()
+
+        if choice in menu_options:
+            if choice == "exit":
+                menu_options[choice]()
+                break
+            else:
+                menu_options[choice]()
+        else:
+            print("Invalid option. Please try again.")
