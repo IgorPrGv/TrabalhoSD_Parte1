@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rdevices.proto\"6\n\rClientCommand\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\x15\n\rtarget_device\x18\x02 \x01(\t\"<\n\nDeviceInfo\x12\x11\n\tdevice_id\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\r\n\x05state\x18\x03 \x01(\t\"*\n\nDeviceList\x12\x1c\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x0b.DeviceInfo\"|\n\nDeviceData\x12\x1b\n\x13\x63urrent_measurement\x18\x01 \x01(\x01\x12\x14\n\x0c\x63urrent_time\x18\x02 \x01(\t\x12\x11\n\tdevice_id\x18\x03 \x01(\t\x12\x13\n\x0bupper_limit\x18\x04 \x01(\t\x12\x13\n\x0blower_limit\x18\x05 \x01(\t\"`\n\rDeviceCommand\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x17\n\x0fset_upper_limit\x18\x03 \x01(\t\x12\x17\n\x0fset_lower_limit\x18\x04 \x01(\tb\x06proto3'
+  serialized_pb=b'\n\rdevices.proto\"6\n\rClientCommand\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\x15\n\rtarget_device\x18\x02 \x01(\t\"|\n\nDeviceData\x12\x1b\n\x13\x63urrent_measurement\x18\x01 \x01(\x01\x12\x14\n\x0c\x63urrent_time\x18\x02 \x01(\t\x12\x11\n\tdevice_id\x18\x03 \x01(\t\x12\x13\n\x0bupper_limit\x18\x04 \x01(\t\x12\x13\n\x0blower_limit\x18\x05 \x01(\t\"`\n\rDeviceCommand\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x17\n\x0fset_upper_limit\x18\x03 \x01(\t\x12\x17\n\x0fset_lower_limit\x18\x04 \x01(\tb\x06proto3'
 )
 
 
@@ -61,84 +61,6 @@ _CLIENTCOMMAND = _descriptor.Descriptor(
   ],
   serialized_start=17,
   serialized_end=71,
-)
-
-
-_DEVICEINFO = _descriptor.Descriptor(
-  name='DeviceInfo',
-  full_name='DeviceInfo',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='device_id', full_name='DeviceInfo.device_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='type', full_name='DeviceInfo.type', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='state', full_name='DeviceInfo.state', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=73,
-  serialized_end=133,
-)
-
-
-_DEVICELIST = _descriptor.Descriptor(
-  name='DeviceList',
-  full_name='DeviceList',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='devices', full_name='DeviceList.devices', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=135,
-  serialized_end=177,
 )
 
 
@@ -197,8 +119,8 @@ _DEVICEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=179,
-  serialized_end=303,
+  serialized_start=73,
+  serialized_end=197,
 )
 
 
@@ -250,14 +172,11 @@ _DEVICECOMMAND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=305,
-  serialized_end=401,
+  serialized_start=199,
+  serialized_end=295,
 )
 
-_DEVICELIST.fields_by_name['devices'].message_type = _DEVICEINFO
 DESCRIPTOR.message_types_by_name['ClientCommand'] = _CLIENTCOMMAND
-DESCRIPTOR.message_types_by_name['DeviceInfo'] = _DEVICEINFO
-DESCRIPTOR.message_types_by_name['DeviceList'] = _DEVICELIST
 DESCRIPTOR.message_types_by_name['DeviceData'] = _DEVICEDATA
 DESCRIPTOR.message_types_by_name['DeviceCommand'] = _DEVICECOMMAND
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -268,20 +187,6 @@ ClientCommand = _reflection.GeneratedProtocolMessageType('ClientCommand', (_mess
   # @@protoc_insertion_point(class_scope:ClientCommand)
   })
 _sym_db.RegisterMessage(ClientCommand)
-
-DeviceInfo = _reflection.GeneratedProtocolMessageType('DeviceInfo', (_message.Message,), {
-  'DESCRIPTOR' : _DEVICEINFO,
-  '__module__' : 'devices_pb2'
-  # @@protoc_insertion_point(class_scope:DeviceInfo)
-  })
-_sym_db.RegisterMessage(DeviceInfo)
-
-DeviceList = _reflection.GeneratedProtocolMessageType('DeviceList', (_message.Message,), {
-  'DESCRIPTOR' : _DEVICELIST,
-  '__module__' : 'devices_pb2'
-  # @@protoc_insertion_point(class_scope:DeviceList)
-  })
-_sym_db.RegisterMessage(DeviceList)
 
 DeviceData = _reflection.GeneratedProtocolMessageType('DeviceData', (_message.Message,), {
   'DESCRIPTOR' : _DEVICEDATA,
