@@ -5,16 +5,6 @@ message ClientCommand {
     string target_device = 2;
 }
 
-message DeviceInfo {
-    string device_id = 1;
-    string type = 2;
-    string state = 3;
-}
-
-message DeviceList {
-    repeated DeviceInfo devices = 1;
-}
-
 message DeviceData{
     double current_measurement = 1;
     string current_time = 2;
